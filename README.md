@@ -1,6 +1,6 @@
 ## Note: This gem doesn't work yet.
 
-# RuDBMS [![Build Status](https://secure.travis-ci.org/ybakos/rudbms.png)](http://travis-ci.org/ybakos/rudbms)
+# RuDBMS [![Build Status](https://secure.travis-ci.org/ybakos/rudbms.png)](http://travis-ci.org/ybakos/rudbms) [![Dependency Status](https://gemnasium.com/ybakos/rudbms.png)](http://gemnasium.com/ybakos/rudbms)
 
 Rudbms is a Ruby implementation of Edward Sciore's SimpleDB relational database management system.
 
