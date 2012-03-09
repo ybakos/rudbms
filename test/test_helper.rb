@@ -1,3 +1,3 @@
 gem 'minitest'
-#require 'rudbms'
+require 'minitest/autorun'
 require 'turn'
