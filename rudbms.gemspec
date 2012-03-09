@@ -15,8 +15,8 @@ Gem::Specification.new do |gem|
   gem.name          = "rudbms"
   gem.require_paths = ["lib"]
 
+  gem.add_dependency "rake"
   gem.add_development_dependency "ruby-debug19"
-  gem.add_development_dependency "rake"
   gem.add_development_dependency "turn"
   gem.add_development_dependency "minitest"
 end
