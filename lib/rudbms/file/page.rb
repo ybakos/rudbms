@@ -14,6 +14,7 @@
 # and then appends it to a new block of the file.  
 # It then reads that block into another page 
 # and extracts the value "hello" into variable s.
+# TODO: make this ruby-doco compatible...
 # <pre>
 # Page p1 = new Page();
 # Block blk = new Block("junk", 6);
