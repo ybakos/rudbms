@@ -1,4 +1,6 @@
-# Rudbms
+## Note: This gem doesn't work yet.
+
+# RuDBMS [![Build Status](https://secure.travis-ci.org/ybakos/rudbms.png)](http://travis-ci.org/ybakos/rudbms)
 
 Rudbms is a Ruby implementation of Edward Sciore's SimpleDB relational database management system.
 
@@ -27,3 +29,5 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+Copyright &copy; 2012 Yong Joseph Bakos. All rights reserved.
