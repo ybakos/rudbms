@@ -1,7 +1,7 @@
 require_relative 'helper'
 require_relative '../lib/rudbms/file/block'
 
-class BlockTest < MiniTest::Unit::TestCase
+class TestBlock < MiniTest::Unit::TestCase
 
   def setup
     @filename = 'alpha'

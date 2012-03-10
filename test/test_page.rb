@@ -1,7 +1,7 @@
 require_relative 'helper'
 require_relative '../lib/rudbms/file/page'
 
-class PageTest < MiniTest::Unit::TestCase
+class TestPage < MiniTest::Unit::TestCase
 
   def setup
   end
