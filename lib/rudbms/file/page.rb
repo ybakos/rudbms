@@ -33,4 +33,103 @@
 # (Edward Sciore)
 class Page
 
+  # The number of bytes in a block.
+  # This value is set unreasonably low, so that it is easier to create and test
+  # databases having a lot of blocks. A more realistic value would be 4K.
+  BLOCK_SIZE = 400
+
+  # The size of an integer in bytes.
+  INT_SIZE = 0.size
+
+  # The maximum size, in bytes, of a string of length n.
+  # A string is represented as the encoding of its characters,
+  # preceded by an integer denoting the number of bytes in this encoding.
+  # If the JVM uses the US-ASCII encoding, then each char
+  # is stored in one byte, so a string of n characters
+  # has a size of 4+n bytes.
+  # @param n the size of the string
+  # @return the maximum number of bytes required to store a string of size n
+  def self.string_size(length)
+    return length * 'c'.size
+  end
+
+  # Creates a new page.  Although the constructor takes no arguments,
+  # it depends on a {@link FileMgrend object that it gets from the
+  # method {@link simpledb.server.SimpleDB#fileMgr()end.
+  # That object is created during system initialization.
+  # Thus this constructor cannot be called until either
+  # {@link simpledb.server.SimpleDB#init(String)end or
+  # {@link simpledb.server.SimpleDB#initFileMgr(String)end or
+  # {@link simpledb.server.SimpleDB#initFileAndLogMgr(String)end or
+  # {@link simpledb.server.SimpleDB#initFileLogAndBufferMgr(String)end
+  # is called first.
+  def initialize
+    @contents = ByteBuffer.allocate_direct(BLOCK_SIZE)
+    @filemgr = SimpleDB.file_mgr
+  end
+
+  # Populates the page with the contents of the specified disk block.
+  def read(block)
+    synchronize { @filemgr.read(block, @contents) }
+  end
+  
+  # Writes the contents of the page to the specified disk block.
+  # @param blk a reference to a disk block
+  def write(block)
+    synchronize { @filemgr.write(block, @contents) }
+  end
+
+  # Appends the contents of the page to the specified file.
+  # @param filename the name of the file
+  # @return the reference to the newly-created disk block
+  def append(filename)
+    synchronize { return filemgr.append(filename, @contents) }
+  end
+  
+  # Returns the integer value at a specified offset of the page.
+  # If an integer was not stored at that location, 
+  # the behavior of the method is unpredictable.
+  # @param offset the byte offset within the page
+  # @return the integer value at that offset
+  def get_int(offset)
+    synchronize do
+      @contents.position(offset)
+      return @contents.get_int
+    end
+  end
+  
+  # Writes an integer to the specified offset on the page.
+  # @param offset the byte offset within the page
+  # @param val the integer to be written to the page
+  def set_int(offset, value)
+    synchronize do
+      contents.position(offset)
+      contents.putInt(val)
+    end
+  end
+  
+  # Returns the string value at the specified offset of the page.
+  # If a string was not stored at that location,
+  # the behavior of the method is unpredictable.
+  # @param offset the byte offset within the page
+  # @return the string value at that offset
+  def get_string(offset)
+    synchronize do
+      @contents.position(offset)
+      len = @contents.get_int()
+      return String.new(@contents.get([]))
+    end
+  end
+  
+  #Writes a string to the specified offset on the page.
+  #@param offset the byte offset within the page
+  #@param val the string to be written to the page
+  def set_string(offset, value)
+    synchronize do
+      @contents.position(offset)
+      @contents.put_int(value.length)
+      @contents.put(value)
+    end
+  end
+
 end
