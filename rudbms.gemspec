@@ -10,8 +10,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Ruby DBMS}
   gem.homepage      = "http://github.com/ybakos/rudbms"
 
-  gem.add_dependency "rake" if ENV['TRAVIS']
-  gem.add_development_dependency "rake"
+  gem.add_development_dependency "rake" unless ENV['TRAVIS']
   gem.add_development_dependency "ruby-debug19"
   gem.add_development_dependency "turn"
   gem.add_development_dependency "minitest"
