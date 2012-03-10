@@ -14,8 +14,8 @@
 # and then appends it to a new block of the file.  
 # It then reads that block into another page 
 # and extracts the value "hello" into variable s.
-# TODO: make this ruby-doco compatible...
-# <pre>
+# TODO: update this Java example to the Ruby implementation.
+# <tt>
 # Page p1 = new Page();
 # Block blk = new Block("junk", 6);
 # p1.read(blk);
@@ -29,7 +29,7 @@
 # Page p3 = new Page();
 # p3.read(blk);
 # String s = p3.getString(20);
-# </pre>
+# </tt>
 # (Edward Sciore)
 class Page
 
@@ -64,8 +64,12 @@ class Page
   # {@link simpledb.server.SimpleDB#initFileLogAndBufferMgr(String)end
   # is called first.
   def initialize
-    @contents = ByteBuffer.allocate_direct(BLOCK_SIZE)
-    @filemgr = SimpleDB.file_mgr
+    @contents = ByteBuffer.allocate_direct(BLOCK_SIZE) #TODO
+                                                       # http://stackoverflow.com/questions/10323/why-doesnt-ruby-have-a-real-stringbuffer-or-stringio
+                                                       # http://stackoverflow.com/questions/1211461/what-is-rubys-stringio-class-really
+                                                       # http://docs.oracle.com/javase/6/docs/api/java/nio/ByteBuffer.html
+                                                       # http://stackoverflow.com/questions/7158124/create-bytebuffer-like-object-in-ruby
+    @filemgr = SimpleDB.file_mgr #TODO
   end
 
   # Populates the page with the contents of the specified disk block.
@@ -103,8 +107,8 @@ class Page
   # @param val the integer to be written to the page
   def set_int(offset, value)
     synchronize do
-      contents.position(offset)
-      contents.putInt(val)
+      @contents.position(offset)
+      @contents.put_int(value)
     end
   end
   
