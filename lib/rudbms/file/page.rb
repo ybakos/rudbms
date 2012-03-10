@@ -14,7 +14,9 @@
 # and then appends it to a new block of the file.  
 # It then reads that block into another page 
 # and extracts the value "hello" into variable s.
+#--
 # TODO: update this Java example to the Ruby implementation.
+#++
 # <tt>
 # Page p1 = new Page();
 # Block blk = new Block("junk", 6);
@@ -47,21 +49,20 @@ class Page
   # If the JVM uses the US-ASCII encoding, then each char
   # is stored in one byte, so a string of n characters
   # has a size of 4+n bytes.
-  # @param n the size of the string
-  # @return the maximum number of bytes required to store a string of size n
+  # <tt>length</tt>: the size of the string
+  # Returns the maximum number of bytes required to store a string of size <tt>length</tt>
   def self.string_size(length)
     return length * 'c'.size
   end
 
   # Creates a new page.  Although the constructor takes no arguments,
-  # it depends on a {@link FileMgrend object that it gets from the
-  # method {@link simpledb.server.SimpleDB#fileMgr()end.
+  # it depends on a FileMgr object that it gets from SimpleDB#fileMgr().
   # That object is created during system initialization.
   # Thus this constructor cannot be called until either
-  # {@link simpledb.server.SimpleDB#init(String)end or
-  # {@link simpledb.server.SimpleDB#initFileMgr(String)end or
-  # {@link simpledb.server.SimpleDB#initFileAndLogMgr(String)end or
-  # {@link simpledb.server.SimpleDB#initFileLogAndBufferMgr(String)end
+  # <tt>SimpleDB#init(String)</tt> or
+  # <tt>SimpleDB#initFileMgr(String)</tt> or
+  # <tt>SimpleDB#initFileAndLogMgr(String)</tt> or
+  # <tt>SimpleDB#initFileLogAndBufferMgr(String)</tt>
   # is called first.
   def initialize
     @contents = ByteBuffer.allocate_direct(BLOCK_SIZE) #TODO
@@ -78,14 +79,14 @@ class Page
   end
   
   # Writes the contents of the page to the specified disk block.
-  # @param blk a reference to a disk block
+  # <tt>block</tt>: a reference to a disk block
   def write(block)
     synchronize { @filemgr.write(block, @contents) }
   end
 
   # Appends the contents of the page to the specified file.
-  # @param filename the name of the file
-  # @return the reference to the newly-created disk block
+  # <tt>filename</tt>: the name of the file.
+  # Returns a reference to the newly-created disk block.
   def append(filename)
     synchronize { return filemgr.append(filename, @contents) }
   end
@@ -93,8 +94,8 @@ class Page
   # Returns the integer value at a specified offset of the page.
   # If an integer was not stored at that location, 
   # the behavior of the method is unpredictable.
-  # @param offset the byte offset within the page
-  # @return the integer value at that offset
+  # <tt>offset</tt>: the byte offset within the page.
+  # Returns the integer value at that offset.
   def get_int(offset)
     synchronize do
       @contents.position(offset)
@@ -103,8 +104,8 @@ class Page
   end
   
   # Writes an integer to the specified offset on the page.
-  # @param offset the byte offset within the page
-  # @param val the integer to be written to the page
+  # <tt>offset</tt>: the byte offset within the page.
+  # <tt>value</tt>: the integer to be written to the page.
   def set_int(offset, value)
     synchronize do
       @contents.position(offset)
@@ -115,8 +116,8 @@ class Page
   # Returns the string value at the specified offset of the page.
   # If a string was not stored at that location,
   # the behavior of the method is unpredictable.
-  # @param offset the byte offset within the page
-  # @return the string value at that offset
+  # <tt>offset</tt>: the byte offset within the page
+  # Returns the string value at that offset
   def get_string(offset)
     synchronize do
       @contents.position(offset)
@@ -125,15 +126,19 @@ class Page
     end
   end
   
-  #Writes a string to the specified offset on the page.
-  #@param offset the byte offset within the page
-  #@param val the string to be written to the page
+  # Writes a string to the specified offset on the page.
+  # <tt>offset</tt>: the byte offset within the page.
+  # <tt>value</tt>: the string to be written to the page.
   def set_string(offset, value)
     synchronize do
       @contents.position(offset)
       @contents.put_int(value.length)
       @contents.put(value)
     end
+  end
+
+  def to_s
+    @contents.string
   end
 
 end
