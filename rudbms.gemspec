@@ -10,12 +10,14 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Ruby DBMS}
   gem.homepage      = "http://github.com/ybakos/rudbms"
 
-  gem.add_development_dependency "rake" unless ENV['TRAVIS']
-  gem.add_development_dependency "ruby-debug19"
-  gem.add_development_dependency "turn"
+  gem.add_development_dependency "rake"
   gem.add_development_dependency "minitest"
-  gem.add_development_dependency "simplecov"
-
+  unless ENV['TRAVIS']
+    gem.add_development_dependency "ruby-debug19"
+    gem.add_development_dependency "simplecov"
+    gem.add_development_dependency "turn"
+  end
+  
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
