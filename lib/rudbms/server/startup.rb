@@ -2,8 +2,8 @@ require 'rudbms/server/server'
 
 class Startup
 
-  def self.main(args)
-    Server.init(args[0]);
+  def self.main(dbname)
+    Server.init(dbname)
   end
 
 end

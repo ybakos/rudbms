@@ -1,8 +1,20 @@
 #!/usr/bin/env ruby
+require 'thor'
 require 'rudbms/server/startup'
 
-puts "Starting rudbms."
+module Rudbms
+  class Rudbms < Thor
 
-if Startup.main(ARGV)
-  puts "Database ready."
+    desc "start DBNAME", "start database server and attach database DBNAME"
+    method_option :stub, :aliases => '-s', :desc => "Option stub"
+    def start(dbname)
+      puts "Starting rudbms with database #{dbname}..."
+      if Startup.main(dbname)
+        puts "Database ready."
+      end
+    end
+
+  end
 end
+
+Rudbms::Rudbms.start
