@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require 'rudbms/server/startup'
+
+puts "Starting rudbms."
+
+if Startup.main(ARGV)
+  puts "Database ready."
+end
