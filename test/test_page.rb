@@ -1,5 +1,4 @@
-require_relative 'helper'
-require_relative '../lib/rudbms/file/page'
+require 'rudbms/file/page'
 
 class TestPage < MiniTest::Unit::TestCase
 

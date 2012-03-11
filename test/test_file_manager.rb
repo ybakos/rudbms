@@ -1,5 +1,4 @@
-require_relative 'helper'
-require_relative '../lib/rudbms/file/file_manager'
+require 'rudbms/file/file_manager'
 
 class TestFileManager < MiniTest::Unit::TestCase
 
@@ -45,6 +44,10 @@ class TestFileManager < MiniTest::Unit::TestCase
     FileUtils.touch(temp_filenames)
     FileManager.new(@dbname)
     temp_filenames.each { |f| refute File.exists?(f), "Temp file was still present in #{@dbname}" }
+  end
+
+  def test_should_raise_exception_if_dir_cannot_be_created
+    flunk
   end
 
 end

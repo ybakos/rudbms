@@ -1,5 +1,4 @@
-require_relative 'helper'
-require_relative '../lib/rudbms/file/block'
+require 'rudbms/file/block'
 
 class TestBlock < MiniTest::Unit::TestCase
 

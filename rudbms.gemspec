@@ -16,6 +16,8 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency "ruby-debug19"
     gem.add_development_dependency "simplecov"
     gem.add_development_dependency "turn"
+    gem.add_development_dependency 'ZenTest'
+    
   end
   
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }

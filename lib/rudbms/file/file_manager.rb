@@ -25,7 +25,7 @@ class FileManager
   def initialize(dbname)
     @open_files = Hash.new
     dbpath = "#{Dir.pwd}/#{dbname}"
-    # TODO: I don't like this.
+    # TODO: Be sure that the CLI will prompt the user if a dir exists.
     unless File.exists?(dbpath)
       Dir.mkdir(dbpath)
       @is_new = true
