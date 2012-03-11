@@ -15,9 +15,7 @@ Gem::Specification.new do |gem|
   unless ENV['TRAVIS']
     gem.add_development_dependency "ruby-debug19"
     gem.add_development_dependency "simplecov"
-    gem.add_development_dependency "turn"
-    gem.add_development_dependency 'ZenTest'
-    
+    gem.add_development_dependency "turn"    
   end
   
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
