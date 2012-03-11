@@ -48,4 +48,6 @@ class FileManager
     raise FileManagerException.new("No write permissions on directory #{dbpath}")
   end
 
+  #TODO
+
 end
