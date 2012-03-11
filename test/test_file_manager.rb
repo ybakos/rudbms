@@ -47,7 +47,18 @@ class TestFileManager < MiniTest::Unit::TestCase
   end
 
   def test_should_raise_exception_if_dir_cannot_be_created
-    flunk
+    # Because that file exists
+    FileUtils.touch(@dbname)
+    assert_raises FileManagerException do
+      FileManager.new(@dbname)
+    end
+    FileUtils.rm(@dbname)
+    # Or because that file is not writable.
+    FileUtils.mkdir(@dbname)
+    `chmod u-w #{@dbname}`
+    assert_raises FileManagerException do
+      FileManager.new(@dbname)
+    end
   end
 
 end

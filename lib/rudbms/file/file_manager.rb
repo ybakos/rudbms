@@ -10,6 +10,8 @@
 # <tt>size(String)</tt> is called by the log manager and transaction manager to
 # determine the end of the file.
 # (Edward Sciore)
+class FileManagerException < Exception; end
+
 class FileManager
 
   TEMP_FILE_PREFIX = "temp"
@@ -26,17 +28,24 @@ class FileManager
     @open_files = Hash.new
     dbpath = "#{Dir.pwd}/#{dbname}"
     # TODO: Be sure that the CLI will prompt the user if a dir exists.
-    unless File.exists?(dbpath)
+    if File.exists?(dbpath) && File.directory?(dbpath)
+      @is_new = false
+    else
       Dir.mkdir(dbpath)
       @is_new = true
-    else
-      @is_new = false
+    end
+    unless File.writable? dbpath
+      raise FileManagerException.new("No write permissions on directory #{dbpath}")
     end
     @db_directory = File.new(dbpath)
     # remove any leftover temporary tables
     Dir.foreach("#{dbpath}") do |f|
       FileUtils.rm("#{dbpath}/#{f}") if f.start_with? TEMP_FILE_PREFIX
     end
+  rescue Errno::EEXIST
+    raise FileManagerException.new("Could not create directory #{dbpath}")
+  rescue Errno::EACCES
+    raise FileManagerException.new("No write permissions on directory #{dbpath}")
   end
 
 end
