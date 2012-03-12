@@ -10,6 +10,4 @@ task :test do
   Dir['test/test_*.rb'].each { |file| require_relative file}
 end
 
-Cucumber::Rake::Task.new(:features) do
-  puts Dir.pwd
-end
+Cucumber::Rake::Task.new(:features)
