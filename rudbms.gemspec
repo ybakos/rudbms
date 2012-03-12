@@ -14,6 +14,8 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "minitest"
+  gem.add_development_dependency "cucumber"
+  gem.add_development_dependency "aruba"
   unless ENV['TRAVIS']
     gem.add_development_dependency "ruby-debug19"
     gem.add_development_dependency "simplecov"
