@@ -34,9 +34,7 @@ class FileManager
       Dir.mkdir(dbpath)
       @is_new = true
     end
-    unless File.writable? dbpath
-      raise FileManagerException.new("No write permissions on directory #{dbpath}")
-    end
+    raise Errno::EACCES unless File.writable? dbpath
     @db_directory = File.new(dbpath)
     # remove any leftover temporary tables
     Dir.foreach("#{dbpath}") do |f|
