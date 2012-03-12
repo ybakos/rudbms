@@ -1,0 +1,3 @@
+class BasicQueryPlanner
+
+end
