@@ -27,25 +27,31 @@ class FileManager
   def initialize(dbname)
     @open_files = Hash.new
     dbpath = "#{Dir.pwd}/#{dbname}"
-    # TODO: Be sure that the CLI will prompt the user if a dir exists.
-    if File.exists?(dbpath) && File.directory?(dbpath)
-      @is_new = false
-    else
-      Dir.mkdir(dbpath)
-      @is_new = true
-    end
-    raise Errno::EACCES unless File.writable? dbpath
-    @db_directory = File.new(dbpath)
-    # remove any leftover temporary tables
-    Dir.foreach("#{dbpath}") do |f|
-      FileUtils.rm("#{dbpath}/#{f}") if f.start_with? TEMP_FILE_PREFIX
-    end
+    create_database_directory(dbpath)
+    remove_any_leftover_temp_tables(dbpath)
   rescue Errno::EEXIST
     raise FileManagerException.new("Could not create directory #{dbpath}")
   rescue Errno::EACCES
     raise FileManagerException.new("No write permissions on directory #{dbpath}")
   end
 
-  #TODO
+  private
+
+    def remove_any_leftover_temp_tables(dbpath)
+      Dir.foreach("#{dbpath}") do |f|
+        FileUtils.rm("#{dbpath}/#{f}") if f.start_with? TEMP_FILE_PREFIX
+      end  
+    end
+
+    def create_database_directory(dbpath)
+      if File.exists?(dbpath) && File.directory?(dbpath)
+        @is_new = false
+      else
+        Dir.mkdir(dbpath)
+        @is_new = true
+      end
+      raise Errno::EACCES unless File.writable? dbpath
+      @db_directory = File.new(dbpath)
+    end
 
 end
