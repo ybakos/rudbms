@@ -20,20 +20,15 @@ class TestBlock < MiniTest::Unit::TestCase
     assert_respond_to(@default_block, :filename, 'Missing attr accessor for filename.')
   end
 
-  def test_should_have_block_number_attribute
-    assert_respond_to(@default_block, :block_number, 'Missing attr accessor for block number.')
+  def test_should_have_number_attribute
+    assert_respond_to(@default_block, :number, 'Missing attr accessor for block number.')
   end
 
   def test_constructor_should_assign_passed_filname_and_block_number
     filename = 'alpha'
     block_num = 1
     assert_equal(@filename, @default_block.filename, 'Filename does not match initialized value.')
-    assert_equal(@block_number, @default_block.block_number, 'Block number does not match initialized value.')
-  end
-
-  def test_should_have_number_attribute_that_returns_block_number
-    assert_respond_to(@default_block, :number, 'Missing attr accessor for number.')
-    assert_equal(@default_block.block_number, @default_block.number, 'Block number does not match initialized value.')    
+    assert_equal(@block_number, @default_block.number, 'Block number does not match initialized value.')
   end
 
   def test_string_representation
