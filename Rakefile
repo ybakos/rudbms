@@ -5,7 +5,7 @@ require 'cucumber/rake/task'
 task :default => :test
 
 desc "Run test suite"
-task :test do
+task :test => :features do
   require_relative 'test/helper'
   Dir['test/test_*.rb'].each { |file| require_relative file}
 end
