@@ -29,6 +29,13 @@
 # s = p3.get_string(20);
 # </tt>
 # (Sciore, 2009)
+#
+# I chose to use a StringIO object where Sciore used a ByteBuffer.
+# http://stackoverflow.com/questions/10323/why-doesnt-ruby-have-a-real-stringbuffer-or-stringio
+# http://stackoverflow.com/questions/1211461/what-is-rubys-stringio-class-really
+# http://docs.oracle.com/javase/6/docs/api/java/nio/ByteBuffer.html
+# http://stackoverflow.com/questions/7158124/create-bytebuffer-like-object-in-ruby
+# https://github.com/koraktor/steam-condenser-ruby/blob/master/lib/core_ext/stringio.rb
 class Page
 
   attr_reader :contents
@@ -62,31 +69,28 @@ class Page
   # <tt>Server#initFileLogAndBufferMgr(String)</tt>
   # is called first.
   def initialize
-    # http://stackoverflow.com/questions/10323/why-doesnt-ruby-have-a-real-stringbuffer-or-stringio
-    # http://stackoverflow.com/questions/1211461/what-is-rubys-stringio-class-really
-    # http://docs.oracle.com/javase/6/docs/api/java/nio/ByteBuffer.html
-    # http://stackoverflow.com/questions/7158124/create-bytebuffer-like-object-in-ruby
-    # https://github.com/koraktor/steam-condenser-ruby/blob/master/lib/core_ext/stringio.rb
     @contents = StringIO.new('', 'r+b')
     @filemgr = Server.file_manager
   end
 
+  # TODO: Synchronize all of these? (Ruby 1.9.3 Mutex.synchronize)
+
   # Populates the page with the contents of the specified file block.
   def read(block)
-    synchronize { @filemgr.read(block, @contents) }
+    @filemgr.read(block, @contents)
   end
   
   # Writes the contents of the page to the specified file block.
   # <tt>block</tt>: a reference to a file block
   def write(block)
-    synchronize { @filemgr.write(block, @contents) }
+    @filemgr.write(block, @contents)
   end
 
   # Appends the contents of the page to the specified file.
   # <tt>filename</tt>: the name of the file.
   # Returns a reference to the newly-created file block.
   def append(filename)
-    synchronize { return @filemgr.append(filename, @contents) }
+    return @filemgr.append(filename, @contents)
   end
   
   # Returns the integer value at a specified offset of the page.
@@ -95,7 +99,7 @@ class Page
   # <tt>offset</tt>: the byte offset within the page.
   # Returns the integer value at that offset.
   def get_int(offset)
-    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
+    
     @contents.pos = offset
     # convert the four bytes to a signed integer
     return @contents.read(4).unpack('l')[0]
@@ -105,7 +109,6 @@ class Page
   # <tt>offset</tt>: the byte offset within the page.
   # <tt>value</tt>: the integer to be written to the page.
   def set_int(offset, value)
-    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
     @contents.pos = offset
     # convert the value to bytes
     @contents.write [value].pack('l')
@@ -117,7 +120,6 @@ class Page
   # <tt>offset</tt>: the byte offset within the page
   # Returns the string value at that offset
   def get_string(offset)
-    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
     @contents.pos = offset
     return @contents.gets
   end
@@ -126,7 +128,6 @@ class Page
   # <tt>offset</tt>: the byte offset within the page.
   # <tt>value</tt>: the string to be written to the page.
   def set_string(offset, value)
-    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
     @contents.pos = offset
     @contents << value
   end
