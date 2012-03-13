@@ -56,4 +56,12 @@ class TestPage < MiniTest::Unit::TestCase
     assert_equal 'test', p.get_string(20), 'Did not seem to get the set string'
   end
 
+  def test_string_representation
+    p = Page.new
+    p.set_string(0, 'howdy!')
+    p.set_int(0, 72)
+    assert_equal "[\"H\\x00\\x00\\x00y!\"]", p.to_s
+    puts p
+  end
+
 end

@@ -108,7 +108,7 @@ class Page
     # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
     @contents.pos = offset
     # convert the value to bytes
-    @contents.write [value].pack('L')
+    @contents.write [value].pack('l')
   end
   
   # Returns the string value at the specified offset of the page.
@@ -132,7 +132,8 @@ class Page
   end
 
   def to_s
-    @contents.string
+    @contents.rewind
+    @contents.to_a.to_s
   end
 
 end

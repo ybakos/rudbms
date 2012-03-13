@@ -8,12 +8,51 @@
 # require 'stringio'
 
 # buffer = StringIO.new('', 'r+b')
-# puts buffer.pos
+# buffer.pos = 0
+# buffer << 'howdy!'
+# buffer.pos = 0
 # buffer.write [72].pack('L')
-# puts buffer.pos
+# buffer.pos = 0
+# puts buffer.to_a.to_s
+
+# buffer.pos = 256
 # buffer.write [73].pack('L')
-# puts buffer.pos
+# buffer.rewind
+# puts buffer.to_a.to_s
 # puts buffer.string
+# puts buffer.size
+
+# buffer = StringIO.new('', 'r+b')
+# buffer.write [72].pack('L')
+# puts buffer.string == "H"
+
+# puts buffer.pos
+# buffer.write [72].pack('l')
+# puts buffer.pos
+# buffer.write [73].pack('l')
+# puts buffer.pos
+# puts buffer.string == 'HI'
+# #$stdout.syswrite buffer.string.to_a
+
+# buffer.pos = 0
+# puts buffer.getc
+# puts buffer.getc == "\x00"
+# puts buffer.getc
+# puts buffer.getc
+# puts buffer.getc
+# puts buffer.getc
+# puts buffer.getc
+# puts buffer.getc
+# puts buffer.getc
+
+# puts "\x00".to_i
+
+# buffer.rewind
+
+# puts buffer.to_a.to_s
+
+#puts buffer.string.unpack('l')[0]
+
 
 # buffer.pos = 0
 # puts buffer.read(4).unpack('l')[0]
@@ -36,3 +75,4 @@
 
 # buffer.pos = 12
 # puts buffer.read(4).unpack('l')[0]
+
