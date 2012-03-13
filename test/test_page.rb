@@ -13,11 +13,9 @@ class TestPage < MiniTest::Unit::TestCase
     assert_equal(0.size, Page::INT_SIZE, 'Page INT_SIZE does not match size of int on platform')
   end
 
-  def test_page_class_string_size_should_equal_size_of_strings_on_platform
-    refute_equal('oop'.size, Page.string_size(1), 'Page string_size does not match size of string on platform')
-    assert_equal('poop'.size, Page.string_size(4), 'Page string_size does not match size of string on platform')
+  def test_page_class_string_size_should_equal_size_of_strings_on_platform_plus_size_of_int
+    refute_equal('oop'.size + 3.size, Page.string_size(1), 'Page string_size does not match size of string on platform')
+    assert_equal('poop'.size + 4.size, Page.string_size(4), 'Page string_size does not match size of string on platform')
   end
-
-
 
 end
