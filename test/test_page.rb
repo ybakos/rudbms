@@ -18,4 +18,42 @@ class TestPage < MiniTest::Unit::TestCase
     assert_equal('poop'.size + 4.size, Page.string_size(4), 'Page string_size does not match size of string on platform')
   end
 
+  def test_set_int_value_written_to_buffer
+    p = Page.new
+    p.set_int(0, 2)
+    p.contents.pos = 0
+    assert_equal 2, p.contents.read(4).unpack('l')[0], 'Did not seem to write expected integer to buffer'
+  end
+
+  def test_get_int_value_read_from_buffer
+    p = Page.new
+    p.contents.write [2].pack('L')
+    assert_equal 2, p.get_int(0), 'Did not seem to read expected integer from buffer'
+  end
+
+  def test_set_string_value_written_to_buffer
+    p = Page.new
+    p.set_string(0, 'test')
+    p.contents.pos = 0
+    assert_equal 'test', p.contents.gets, 'Did not seem to write expected string to buffer'
+  end
+
+  def test_get_string_value_read_from_buffer
+    p = Page.new
+    p.contents << 'test'
+    assert_equal 'test', p.get_string(0), 'Did not seem to read expected string from buffer'
+  end  
+
+  def test_get_set_integer
+    p = Page.new
+    p.set_int(20, 2)
+    assert_equal 2, p.get_int(20), 'Did not seem to get the set integer'
+  end
+
+  def test_get_set_string
+    p = Page.new
+    p.set_string(20, 'test')
+    assert_equal 'test', p.get_string(20), 'Did not seem to get the set string'
+  end
+
 end

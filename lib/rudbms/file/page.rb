@@ -31,6 +31,8 @@
 # (Sciore, 2009)
 class Page
 
+  attr_reader :contents
+
   # The number of bytes in a block.
   # This value is set unreasonably low, so that it is easier to create and tinker
   # with databases having a lot of blocks. A more realistic value would be 4K.
@@ -65,7 +67,7 @@ class Page
     # http://docs.oracle.com/javase/6/docs/api/java/nio/ByteBuffer.html
     # http://stackoverflow.com/questions/7158124/create-bytebuffer-like-object-in-ruby
     # https://github.com/koraktor/steam-condenser-ruby/blob/master/lib/core_ext/stringio.rb
-    @contents = StringIO.new('', 'r+b') #TODO
+    @contents = StringIO.new('', 'r+b')
     @filemgr = Server.file_manager
   end
 
@@ -93,20 +95,20 @@ class Page
   # <tt>offset</tt>: the byte offset within the page.
   # Returns the integer value at that offset.
   def get_int(offset)
-    synchronize do
-      @contents.position(offset)
-      return @contents.get_int
-    end
+    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
+    @contents.pos = offset
+    # convert the four bytes to a signed integer
+    return @contents.read(4).unpack('l')[0]
   end
   
   # Writes an integer to the specified offset on the page.
   # <tt>offset</tt>: the byte offset within the page.
   # <tt>value</tt>: the integer to be written to the page.
   def set_int(offset, value)
-    synchronize do
-      @contents.position(offset)
-      @contents.put_int(value)
-    end
+    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
+    @contents.pos = offset
+    # convert the value to bytes
+    @contents.write [value].pack('L')
   end
   
   # Returns the string value at the specified offset of the page.
@@ -115,22 +117,18 @@ class Page
   # <tt>offset</tt>: the byte offset within the page
   # Returns the string value at that offset
   def get_string(offset)
-    synchronize do
-      @contents.position(offset)
-      len = @contents.get_int()
-      return String.new(@contents.get([]))
-    end
+    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
+    @contents.pos = offset
+    return @contents.gets
   end
   
   # Writes a string to the specified offset on the page.
   # <tt>offset</tt>: the byte offset within the page.
   # <tt>value</tt>: the string to be written to the page.
   def set_string(offset, value)
-    synchronize do
-      @contents.position(offset)
-      @contents.put_int(value.length)
-      @contents.put(value)
-    end
+    # synchronize #TODO: Ruby 1.9.3 Mutex.synchronize
+    @contents.pos = offset
+    @contents << value
   end
 
   def to_s
