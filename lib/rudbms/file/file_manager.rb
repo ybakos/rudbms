@@ -1,15 +1,17 @@
-# The SimpleDB file manager.
+# file/file_manager.rb
+# Yong Joseph Bakos
+# Translated from simpledb/file/FileManager.java
+#
+# The Rudbms file manager.
 # The database system stores its data as files within a specified directory.
 # The file manager provides methods for reading the contents of a file block
-# to a Java byte buffer, writing the contents of a byte buffer to a file block,
-# and appending the contents of a byte buffer to the end of a file.
-# These methods are called exclusively by the class <tt>Page</tt>, and are
-# thus package-private.
-# The class also contains two public methods:
+# to a Page, writing the contents of a Page to a file block,
+# and appending the contents of a Page to the end of a file.
+# These methods are called exclusively by the class <tt>Page</tt>.
+# This class also contains two public methods:
 # <tt>isNew()</tt> is called during system initialization by <tt>SimpleDB#init</tt>.
 # <tt>size(String)</tt> is called by the log manager and transaction manager to
-# determine the end of the file.
-# (Edward Sciore)
+# determine the end of the file (Sciore, 2009).
 class FileManagerException < Exception; end
 
 class FileManager
@@ -34,9 +36,35 @@ class FileManager
   rescue Errno::EACCES
     raise FileManagerException.new("No write permissions on directory #{dbpath}")
   end
+  
+  # Returns the number of blocks in the specified file.
+  # <tt>filename</tt>: the name of the file
+  def size(filename)
+    begin
+      f = get_file(filename)
+      return f.size / Page::BLOCK_SIZE
+    rescue
+      raise FileManagerException.new("Could not read file #{filename}")
+    end
+  end
 
   private
 
+    # Returns the File instance for the specified filename.
+    # The File instance is stored in a map keyed on the filename.
+    # If the file is not open, then it is opened and the File instance
+    # is added to the map.
+    # <tt>filename</tt>: the specified filename
+    def get_file(filename)
+      f = @open_files[filename] || new_file(filename)
+    end
+
+    # Adds a file to the FileManager's internal hash table.
+    def new_file(filename)
+      @open_files[filename] = File.new("#{@db_directory.path}/#{filename}", 'w+')
+    end
+
+    # Deletes temp files in directory <tt>dbpath</tt>.
     def remove_any_leftover_temp_tables(dbpath)
       Dir.foreach("#{dbpath}") do |f|
         FileUtils.rm("#{dbpath}/#{f}") if f.start_with? TEMP_FILE_PREFIX

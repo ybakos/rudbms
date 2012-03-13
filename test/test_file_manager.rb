@@ -61,6 +61,21 @@ class TestFileManager < MiniTest::Unit::TestCase
     end
   end
 
-  #TODO
+  def test_size_should_return_number_of_file_blocks_in_file
+    filename = "temp_empty_file_size_test"
+    f = FileManager.new(@dbname)
+    assert_equal 0, f.size(filename)
+    small_filename = "temp_sub_block_size_test"
+    File.open("#{@dbname}/#{small_filename}", 'w+') do |small_file|
+      small_file << 'test'
+    end
+    assert_equal 0, f.size(small_filename)
+    big_filename = "temp_larger_than_block_size_test"
+    big_file = f.send(:get_file, big_filename)
+    1026.times do
+      big_file << 'x'
+    end
+    assert_equal 2, f.size(big_filename)
+  end
 
 end

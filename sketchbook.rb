@@ -7,6 +7,14 @@
 
 # require 'stringio'
 
+# File.open('sketch', 'w+') do |big_file|
+#   1024.times do
+#     big_file << 'x'
+#   end
+# end
+# f = File.open('sketch', 'r')
+# puts f.size
+
 # buffer = StringIO.new('', 'r+b')
 # buffer.pos = 0
 # buffer << 'howdy!'

@@ -56,6 +56,18 @@ class TestPage < MiniTest::Unit::TestCase
     assert_equal 'test', p.get_string(20), 'Did not seem to get the set string'
   end
 
+  def test_read
+    skip
+  end
+
+  def test_write
+    skip
+  end
+
+  def test_append
+    skip
+  end
+
   def test_string_representation
     p = Page.new
     p.set_string(0, 'howdy!')
